@@ -22,7 +22,7 @@ let cantSerpientes = 5;
 let cantEscaleras = 5;
 let serpientesCreadas = 0;
 let escalersCreadas = 0;
-let primerClick = null; // Para almacenar la primera casilla seleccionada
+let primerClick = null;
 
 // =====================================================
 // ELEMENTOS DEL DOM
@@ -52,19 +52,6 @@ const turnosJ2 = document.getElementById('turnosJ2');
 // FUNCIONES DE CONFIGURACIÓN
 // =====================================================
 
-function obtenerPosicion(num) {
-    num -= 1;
-    const fila_desde_abajo = Math.floor(num / COLUMNAS);
-    let fila = FILAS - 1 - fila_desde_abajo;
-    let col = num % COLUMNAS;
-
-    if (fila_desde_abajo % 2 === 1) {
-        col = COLUMNAS - 1 - col;
-    }
-
-    return { fila, col };
-}
-
 function crearTableroConfig() {
     tableroConfig.innerHTML = '';
     
@@ -82,15 +69,12 @@ function seleccionarCasilla(numCasilla) {
     const casilla = document.getElementById(`casilla-config-${numCasilla}`);
     const esSerpiente = serpientesCreadas < cantSerpientes;
     const tipo = esSerpiente ? 'Serpiente' : 'Escalera';
-    const numTipo = esSerpiente ? serpientesCreadas + 1 : escalersCreadas + 1;
 
     if (primerClick === null) {
-        // Primer click: seleccionar casilla
         primerClick = { numero: numCasilla, esSerpiente };
         casilla.classList.add('seleccionada');
         detallesTexto.textContent = `Seleccionaste casilla ${numCasilla}. Ahora elige la segunda casilla.`;
     } else {
-        // Segundo click: confirmar o cancelar
         const esMismoTipo = primerClick.esSerpiente === esSerpiente;
         const esValido = esMismoTipo && primerClick.numero !== numCasilla;
 
@@ -101,7 +85,6 @@ function seleccionarCasilla(numCasilla) {
             return;
         }
 
-        // Validaciones específicas
         if (primerClick.esSerpiente) {
             if (primerClick.numero <= numCasilla) {
                 detallesTexto.textContent = '❌ En una serpiente, la cabeza debe ser mayor que la cola.';
@@ -110,7 +93,7 @@ function seleccionarCasilla(numCasilla) {
                 return;
             }
             if (primerClick.numero >= FIN || numCasilla <= 1) {
-                detallesTexto.textContent = '❌ Casillas inválidas. La cabeza no puede ser 100 y la cola debe ser mayor a 1.';
+                detallesTexto.textContent = '❌ Casillas inválidas.';
                 document.getElementById(`casilla-config-${primerClick.numero}`).classList.remove('seleccionada');
                 primerClick = null;
                 return;
@@ -125,7 +108,7 @@ function seleccionarCasilla(numCasilla) {
                 return;
             }
             if (primerClick.numero <= 1 || numCasilla > FIN) {
-                detallesTexto.textContent = '❌ Casillas inválidas. El inicio debe ser mayor a 1 y el final no puede superar 100.';
+                detallesTexto.textContent = '❌ Casillas inválidas.';
                 document.getElementById(`casilla-config-${primerClick.numero}`).classList.remove('seleccionada');
                 primerClick = null;
                 return;
@@ -136,12 +119,10 @@ function seleccionarCasilla(numCasilla) {
 
         SALTOS = { ...serpientes, ...escaleras };
         
-        // Actualizar UI
         marcarCasillasCreadas();
         document.getElementById(`casilla-config-${primerClick.numero}`).classList.remove('seleccionada');
         primerClick = null;
 
-        // Actualizar estado
         if (serpientesCreadas < cantSerpientes) {
             estadoTexto.textContent = `Serpiente ${serpientesCreadas + 1} - Click en casilla ALTA`;
             detallesTexto.textContent = `Serpientes: ${serpientesCreadas}/${cantSerpientes} | Escaleras: ${escalersCreadas}/${cantEscaleras}`;
@@ -193,31 +174,27 @@ function construirMatrizTransicion() {
 function calcularTurnosEsperados() {
     const mT = construirMatrizTransicion();
     
-    // P = matriz sin la última fila (estado absorbente)
     const P = [];
     for (let i = 1; i < FIN; i++) {
         P[i - 1] = mT[i].slice(1, FIN);
     }
 
-    // Q = submatriz sin el estado absorbente
     const Q = [];
     for (let i = 0; i < FIN - 1; i++) {
         Q[i] = P[i].slice(0, FIN - 1);
     }
 
-    // I = matriz identidad
     const I = matrizIdentidad(FIN - 1);
-
-    // I - Q
     const IQ = sumarMatrices(I, multiplicarPorEscalar(Q, -1));
 
-    // N = (I - Q)^-1
-    const N = invertirMatriz(IQ);
-
-    // Turnos esperados = suma de cada fila de N
-    const turnos = N.map(fila => fila.reduce((a, b) => a + b, 0));
-
-    return turnos;
+    try {
+        const N = invertirMatriz(IQ);
+        const turnos = N.map(fila => fila.reduce((a, b) => a + b, 0));
+        return turnos;
+    } catch (e) {
+        console.error('Error en cálculo de turnos:', e);
+        return Array(FIN - 1).fill(0);
+    }
 }
 
 // =====================================================
@@ -272,8 +249,8 @@ function actualizarTurnosEsperados() {
     const t1 = jugadores[0] === FIN ? 0 : tEsperados[jugadores[0] - 2] || 0;
     const t2 = jugadores[1] === FIN ? 0 : tEsperados[jugadores[1] - 2] || 0;
 
-    turnosJ1.textContent = t1.toFixed(1);
-    turnosJ2.textContent = t2.toFixed(1);
+    turnosJ1.textContent = isFinite(t1) ? t1.toFixed(1) : '0.0';
+    turnosJ2.textContent = isFinite(t2) ? t2.toFixed(1) : '0.0';
 }
 
 function lanzarDado() {
@@ -323,16 +300,13 @@ cantEscalerasInput.addEventListener('change', (e) => {
 });
 
 btnComenzar.addEventListener('click', () => {
-    // Calcular turnos esperados
     tEsperados = calcularTurnosEsperados();
     
-    // Cambiar modo
     modoConfiguracion.classList.remove('modo-activo');
     modoConfiguracion.classList.add('modo-inactivo');
     modoJuego.classList.remove('modo-inactivo');
     modoJuego.classList.add('modo-activo');
 
-    // Crear tablero y empezar
     jugadores = [1, 1];
     turno = 0;
     jugando = true;
@@ -346,7 +320,6 @@ btnComenzar.addEventListener('click', () => {
 dadoBtn.addEventListener('click', lanzarDado);
 
 btnVolver.addEventListener('click', () => {
-    // Resetear
     serpientes = {};
     escaleras = {};
     SALTOS = {};
@@ -358,13 +331,11 @@ btnVolver.addEventListener('click', () => {
     jugando = false;
     juego_terminado = false;
 
-    // Cambiar modo
     modoJuego.classList.remove('modo-activo');
     modoJuego.classList.add('modo-inactivo');
     modoConfiguracion.classList.remove('modo-inactivo');
     modoConfiguracion.classList.add('modo-activo');
 
-    // Recrear tablero de configuración
     crearTableroConfig();
     btnComenzar.disabled = true;
     estadoTexto.textContent = 'Serpiente 1 - Click en casilla ALTA';

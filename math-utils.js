@@ -2,9 +2,6 @@
 // UTILIDADES PARA ÁLGEBRA LINEAL
 // =====================================================
 
-/**
- * Invierte una matriz usando Gauss-Jordan
- */
 function invertirMatriz(matriz) {
     const n = matriz.length;
     const copia = matriz.map(fila => [...fila]);
@@ -44,40 +41,16 @@ function invertirMatriz(matriz) {
     return inversa;
 }
 
-/**
- * Multiplica dos matrices
- */
-function multiplicarMatrices(A, B) {
-    const resultado = Array.from({ length: A.length }, () => Array(B[0].length).fill(0));
-    for (let i = 0; i < A.length; i++) {
-        for (let j = 0; j < B[0].length; j++) {
-            for (let k = 0; k < B.length; k++) {
-                resultado[i][j] += A[i][k] * B[k][j];
-            }
-        }
-    }
-    return resultado;
-}
-
-/**
- * Crea la matriz de identidad
- */
 function matrizIdentidad(n) {
     return Array.from({ length: n }, (_, i) => 
         Array.from({ length: n }, (_, j) => i === j ? 1 : 0)
     );
 }
 
-/**
- * Suma dos matrices
- */
 function sumarMatrices(A, B) {
     return A.map((fila, i) => fila.map((val, j) => val + B[i][j]));
 }
 
-/**
- * Multiplica una matriz por un escalar
- */
 function multiplicarPorEscalar(matriz, escalar) {
     return matriz.map(fila => fila.map(val => val * escalar));
 }
