@@ -1,391 +1,270 @@
-body {
+* {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #141e30, #243b55);
-    color: white;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-
-    min-height: 100vh;
     padding: 20px;
 }
 
-.pantalla {
+.container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    padding: 30px;
+    max-width: 900px;
     width: 100%;
-    max-width: 1000px;
-    text-align: center;
 }
 
 h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+}
+
+h2 {
+    color: #667eea;
     margin-bottom: 20px;
-    font-size: 40px;
 }
 
-/* ===================== MODO CONFIGURACIÓN ===================== */
-
-.modo-activo {
-    display: block;
-}
-
-.modo-inactivo {
+.pantalla {
     display: none;
 }
 
-.panel-config {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 30px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
+.pantalla.activa {
+    display: block;
 }
 
-.panel-config h2 {
-    margin-top: 0;
-}
-
-.config-inputs {
+.config-panel {
     display: flex;
     gap: 20px;
-    justify-content: center;
     margin-bottom: 20px;
     flex-wrap: wrap;
 }
 
-.config-inputs label {
+.config-panel label {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    align-items: center;
+    gap: 10px;
     font-weight: bold;
+    color: #333;
 }
 
-.config-inputs input {
-    padding: 8px 12px;
-    border: 2px solid #3498db;
-    border-radius: 8px;
-    font-size: 16px;
+.config-panel input {
     width: 80px;
-    text-align: center;
-    background: white;
-    color: black;
+    padding: 8px;
+    border: 2px solid #667eea;
+    border-radius: 5px;
+    font-size: 16px;
 }
 
 .instruccion {
-    background: rgba(255, 255, 255, 0.15);
-    padding: 15px;
-    border-radius: 10px;
-    margin: 20px 0;
-    border-left: 4px solid #f39c12;
-}
-
-.instruccion p {
-    margin: 8px 0;
-    font-size: 14px;
-}
-
-#estado {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
     font-weight: bold;
-    font-size: 16px;
-    color: #f1c40f;
+    padding: 15px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
 }
 
-#detalles {
-    font-size: 12px;
-    color: #ecf0f1;
-}
-
-.panel-tablero-config {
-    margin: 20px 0;
-    max-height: 600px;
-    overflow-y: auto;
-}
-
-.tablero-config {
-    width: 100%;
-    max-width: 600px;
-    aspect-ratio: 1 / 1;
-    margin: 0 auto;
-
+.tablero {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
+    gap: 2px;
+    background: #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 20px 0;
+    aspect-ratio: 1;
+}
 
-    border: 5px solid white;
+.casilla {
     background: white;
-    cursor: pointer;
-}
-
-.casilla-config {
-    border: 1px solid #555;
-    position: relative;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
     font-weight: bold;
-    color: black;
     font-size: 12px;
-    transition: 0.2s;
+    color: #333;
+    position: relative;
+    transition: all 0.2s;
+    min-height: 60px;
 }
 
-.casilla-config:hover {
-    background: #e8e8e8 !important;
+.casilla:hover {
+    background: #f5f5f5;
     transform: scale(0.95);
 }
 
-.casilla-config:nth-child(odd) {
-    background: #f1f1f1;
+.casilla.serpiente {
+    background: #ffcccc;
 }
 
-.casilla-config:nth-child(even) {
-    background: #d7eaff;
+.casilla.escalera {
+    background: #ccffcc;
 }
 
-.casilla-config.seleccionada {
-    background: #ffeb3b !important;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+.casilla.seleccionada {
+    background: #ffeb99;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
 
-.btn-comenzar {
-    background: #2ecc71;
-    color: white;
-    border: none;
-    padding: 15px 40px;
-    font-size: 18px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s;
-    margin-top: 20px;
-    font-weight: bold;
+.ficha {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    bottom: 2px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.btn-comenzar:hover:not(:disabled) {
-    background: #27ae60;
-    transform: scale(1.05);
+.ficha.j1 {
+    background: #ff4444;
+    left: 2px;
 }
 
-.btn-comenzar:disabled {
-    background: #95a5a6;
-    cursor: not-allowed;
-    opacity: 0.6;
+.ficha.j2 {
+    background: #4444ff;
+    right: 2px;
 }
 
-/* ===================== MODO JUEGO ===================== */
-
-.panel-superior {
+.info-panel {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    gap: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
 }
 
-.info {
-    text-align: left;
-    flex: 1;
+.info-panel h3 {
+    color: #333;
+    margin: 0 0 5px 0;
 }
 
-.info h2 {
+.info-panel p {
+    color: #666;
     margin: 0;
 }
 
-.info p {
-    margin: 5px 0 0 0;
-}
-
 .dado {
-    width: 100px;
-    height: 100px;
-
     background: white;
-    color: black;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-size: 60px;
-
-    border-radius: 20px;
-
+    border: 3px solid #667eea;
+    width: 80px;
+    height: 80px;
+    font-size: 40px;
+    border-radius: 10px;
     cursor: pointer;
-
-    transition: 0.2s;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
 }
 
 .dado:hover {
     transform: scale(1.1);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
 }
 
 .dado:active {
     transform: scale(0.95);
 }
 
-.tablero {
-    width: 100%;
-    max-width: 800px;
-    aspect-ratio: 1 / 1;
-
-    margin: 20px auto;
-
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-
-    border: 5px solid white;
-
-    background: white;
-}
-
-.casilla {
-    border: 1px solid #555;
-
-    position: relative;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-weight: bold;
-
-    color: black;
-}
-
-.casilla:nth-child(odd) {
-    background: #f1f1f1;
-}
-
-.casilla:nth-child(even) {
-    background: #d7eaff;
-}
-
-.numero {
-    position: absolute;
-
-    top: 4px;
-    left: 4px;
-
-    font-size: 12px;
-}
-
-.serpiente {
-    background: #ffb3b3 !important;
-}
-
-.escalera {
-    background: #b9ffb3 !important;
-}
-
-.ficha {
-    width: 25px;
-    height: 25px;
-
-    border-radius: 50%;
-
-    position: absolute;
-
-    bottom: 5px;
-}
-
-.ficha1 {
-    background: red;
-    left: 10px;
-}
-
-.ficha2 {
-    background: blue;
-    right: 10px;
-}
-
-.panel-prediccion {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin: 15px 0;
-    flex-wrap: wrap;
-}
-
 .prediccion {
-    background: rgba(255, 255, 255, 0.15);
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-size: 14px;
-    border-left: 4px solid #9b59b6;
-}
-
-.prediccion span:last-child {
-    font-weight: bold;
-    color: #f1c40f;
-    margin-left: 8px;
-    font-size: 16px;
-}
-
-.panel-jugadores {
-    margin: 20px 0;
-
     display: flex;
-    justify-content: space-around;
-
-    font-size: 18px;
-    flex-wrap: wrap;
-    gap: 15px;
+    justify-content: center;
+    gap: 40px;
+    margin: 20px 0;
+    padding: 15px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #333;
 }
 
-.jugador {
-    padding: 15px 30px;
-
-    border-radius: 15px;
-
-    background: rgba(255,255,255,0.1);
-    flex: 1;
-    min-width: 200px;
+.prediccion span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.btn-volver {
-    background: #e74c3c;
+.prediccion strong {
+    color: #667eea;
+    font-size: 1.2em;
+}
+
+.posiciones {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 20px 0;
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.btn {
+    background: #667eea;
     color: white;
     border: none;
     padding: 12px 30px;
     font-size: 16px;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: 0.3s;
-    margin-top: 20px;
     font-weight: bold;
+    transition: all 0.3s;
+    display: block;
+    margin: 20px auto 0;
 }
 
-.btn-volver:hover {
-    background: #c0392b;
-    transform: scale(1.05);
+.btn:hover:not(:disabled) {
+    background: #5568d3;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
 }
 
-/* ===================== RESPONSIVO ===================== */
+.btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn-secondary {
+    background: #ff6b6b;
+}
+
+.btn-secondary:hover {
+    background: #ff5252;
+}
 
 @media (max-width: 768px) {
-    .pantalla {
-        padding: 10px;
+    .container {
+        padding: 15px;
     }
-
+    
     h1 {
-        font-size: 28px;
+        font-size: 1.8em;
     }
-
-    .panel-superior {
-        flex-direction: column;
+    
+    .tablero {
+        min-height: 300px;
     }
-
-    .info {
-        width: 100%;
-    }
-
-    .config-inputs {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .config-inputs input {
-        width: 100%;
-    }
-
-    .panel-jugadores {
-        flex-direction: column;
+    
+    .casilla {
+        min-height: 30px;
+        font-size: 10px;
     }
 }

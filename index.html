@@ -3,83 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serpientes y Escaleras - Versión Avanzada</title>
+    <title>Serpientes y Escaleras Avanzado</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <div class="pantalla">
+    <div class="container">
         <h1>🐍 Serpientes y Escaleras 🪜</h1>
-
-        <!-- MODO CONFIGURACIÓN -->
-        <div id="modoConfiguracion" class="modo-activo">
-            <div class="panel-config">
-                <h2>⚙️ Configurar Juego</h2>
-                
-                <div class="config-inputs">
-                    <label>
-                        ¿Cuántas serpientes?
-                        <input type="number" id="cantSerpientes" min="1" max="10" value="5">
-                    </label>
-                    <label>
-                        ¿Cuántas escaleras?
-                        <input type="number" id="cantEscaleras" min="1" max="10" value="5">
-                    </label>
-                </div>
-
-                <div class="instruccion">
-                    <p>📍 <strong>Haz click en el tablero para crear:</strong></p>
-                    <p id="estado">Serpiente 1 - Click en casilla ALTA</p>
-                    <p id="detalles"></p>
-                </div>
-
-                <div class="panel-tablero-config">
-                    <div id="tableroConfig" class="tablero-config"></div>
-                </div>
-
-                <button id="btnComenzar" class="btn-comenzar" disabled>
-                    Comenzar Juego ▶️
-                </button>
+        
+        <!-- PANTALLA DE CONFIGURACION -->
+        <div id="pantallaConfig" class="pantalla activa">
+            <h2>⚙️ Configurar Juego</h2>
+            
+            <div class="config-panel">
+                <label>Serpientes: <input type="number" id="numSerpientes" min="1" max="15" value="5"></label>
+                <label>Escaleras: <input type="number" id="numEscaleras" min="1" max="15" value="5"></label>
             </div>
+            
+            <p id="instruccion" class="instruccion">Haz click en dos casillas para crear una serpiente o escalera</p>
+            <div id="tableroConfig" class="tablero"></div>
+            
+            <button id="btnIniciar" class="btn" disabled>Comenzar Juego ▶️</button>
         </div>
-
-        <!-- MODO JUEGO -->
-        <div id="modoJuego" class="modo-inactivo">
-            <div class="panel-superior">
-                <div class="info">
-                    <h2 id="turno">Turno Jugador 1</h2>
-                    <p id="mensaje">Presiona el dado para iniciar</p>
+        
+        <!-- PANTALLA DE JUEGO -->
+        <div id="pantallaJuego" class="pantalla">
+            <div class="info-panel">
+                <div>
+                    <h3 id="turnoInfo">Turno: Jugador 1</h3>
+                    <p id="mensajeInfo"></p>
                 </div>
-                <div class="dado" id="dado">🎲</div>
+                <button id="btnDado" class="dado">🎲</button>
             </div>
-
-            <div id="tablero" class="tablero"></div>
-
-            <div class="panel-prediccion">
-                <div class="prediccion">
-                    <span>🔮 J1 turnos restantes:</span>
-                    <span id="turnosJ1">-</span>
-                </div>
-                <div class="prediccion">
-                    <span>🔮 J2 turnos restantes:</span>
-                    <span id="turnosJ2">-</span>
-                </div>
+            
+            <div id="tableroJuego" class="tablero"></div>
+            
+            <div class="prediccion">
+                <span>🔮 J1: <strong id="pred1">--</strong> turnos</span>
+                <span>🔮 J2: <strong id="pred2">--</strong> turnos</span>
             </div>
-
-            <div class="panel-jugadores">
-                <div class="jugador rojo">
-                    🔴 Jugador 1: <span id="pos1">1</span>
-                </div>
-                <div class="jugador azul">
-                    🔵 Jugador 2: <span id="pos2">1</span>
-                </div>
+            
+            <div class="posiciones">
+                <div>🔴 J1: <span id="pos1">1</span></div>
+                <div>🔵 J2: <span id="pos2">1</span></div>
             </div>
-
-            <button id="btnVolver" class="btn-volver">⬅️ Volver a Configurar</button>
+            
+            <button id="btnVolver" class="btn btn-secondary">⬅️ Volver</button>
         </div>
     </div>
-
-    <script src="math-utils.js"></script>
-    <script src="script.js"></script>
+    
+    <script src="main.js"></script>
 </body>
 </html>
