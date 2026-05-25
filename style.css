@@ -1,0 +1,149 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    background: linear-gradient(135deg, #141e30, #243b55);
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh;
+}
+
+.pantalla {
+    width: 900px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 40px;
+}
+
+.panel-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.info {
+    text-align: left;
+}
+
+.dado {
+    width: 100px;
+    height: 100px;
+
+    background: white;
+    color: black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 60px;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.dado:hover {
+    transform: scale(1.1);
+}
+
+.tablero {
+    width: 800px;
+    height: 800px;
+
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+
+    border: 5px solid white;
+
+    background: white;
+}
+
+.casilla {
+    border: 1px solid #555;
+
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-weight: bold;
+
+    color: black;
+}
+
+.casilla:nth-child(odd) {
+    background: #f1f1f1;
+}
+
+.casilla:nth-child(even) {
+    background: #d7eaff;
+}
+
+.numero {
+    position: absolute;
+
+    top: 4px;
+    left: 4px;
+
+    font-size: 12px;
+}
+
+.serpiente {
+    background: #ffb3b3 !important;
+}
+
+.escalera {
+    background: #b9ffb3 !important;
+}
+
+.ficha {
+    width: 25px;
+    height: 25px;
+
+    border-radius: 50%;
+
+    position: absolute;
+
+    bottom: 5px;
+}
+
+.ficha1 {
+    background: red;
+    left: 10px;
+}
+
+.ficha2 {
+    background: blue;
+    right: 10px;
+}
+
+.panel-jugadores {
+    margin-top: 20px;
+
+    display: flex;
+    justify-content: space-around;
+
+    font-size: 24px;
+}
+
+.jugador {
+    padding: 15px 30px;
+
+    border-radius: 15px;
+
+    background: rgba(255,255,255,0.1);
+}
