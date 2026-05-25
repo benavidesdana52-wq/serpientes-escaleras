@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #141e30, #243b55);
     color: white;
 
@@ -9,10 +9,12 @@ body {
     align-items: center;
 
     min-height: 100vh;
+    padding: 20px;
 }
 
 .pantalla {
-    width: 900px;
+    width: 100%;
+    max-width: 1000px;
     text-align: center;
 }
 
@@ -21,16 +23,172 @@ h1 {
     font-size: 40px;
 }
 
+/* ===================== MODO CONFIGURACIÓN ===================== */
+
+.modo-activo {
+    display: block;
+}
+
+.modo-inactivo {
+    display: none;
+}
+
+.panel-config {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.panel-config h2 {
+    margin-top: 0;
+}
+
+.config-inputs {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.config-inputs label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-weight: bold;
+}
+
+.config-inputs input {
+    padding: 8px 12px;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 80px;
+    text-align: center;
+    background: white;
+    color: black;
+}
+
+.instruccion {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border-left: 4px solid #f39c12;
+}
+
+.instruccion p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+#estado {
+    font-weight: bold;
+    font-size: 16px;
+    color: #f1c40f;
+}
+
+#detalles {
+    font-size: 12px;
+    color: #ecf0f1;
+}
+
+.panel-tablero-config {
+    margin: 20px 0;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.tablero-config {
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+
+    border: 5px solid white;
+    background: white;
+    cursor: pointer;
+}
+
+.casilla-config {
+    border: 1px solid #555;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: black;
+    font-size: 12px;
+    transition: 0.2s;
+}
+
+.casilla-config:hover {
+    background: #e8e8e8 !important;
+    transform: scale(0.95);
+}
+
+.casilla-config:nth-child(odd) {
+    background: #f1f1f1;
+}
+
+.casilla-config:nth-child(even) {
+    background: #d7eaff;
+}
+
+.casilla-config.seleccionada {
+    background: #ffeb3b !important;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.btn-comenzar {
+    background: #2ecc71;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.btn-comenzar:hover:not(:disabled) {
+    background: #27ae60;
+    transform: scale(1.05);
+}
+
+.btn-comenzar:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* ===================== MODO JUEGO ===================== */
+
 .panel-superior {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     margin-bottom: 20px;
+    gap: 20px;
 }
 
 .info {
     text-align: left;
+    flex: 1;
+}
+
+.info h2 {
+    margin: 0;
+}
+
+.info p {
+    margin: 5px 0 0 0;
 }
 
 .dado {
@@ -51,17 +209,23 @@ h1 {
     cursor: pointer;
 
     transition: 0.2s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .dado:hover {
     transform: scale(1.1);
 }
 
-.tablero {
-    width: 800px;
-    height: 800px;
+.dado:active {
+    transform: scale(0.95);
+}
 
-    margin: auto;
+.tablero {
+    width: 100%;
+    max-width: 800px;
+    aspect-ratio: 1 / 1;
+
+    margin: 20px auto;
 
     display: grid;
     grid-template-columns: repeat(10, 1fr);
@@ -131,13 +295,38 @@ h1 {
     right: 10px;
 }
 
+.panel-prediccion {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.prediccion {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    border-left: 4px solid #9b59b6;
+}
+
+.prediccion span:last-child {
+    font-weight: bold;
+    color: #f1c40f;
+    margin-left: 8px;
+    font-size: 16px;
+}
+
 .panel-jugadores {
-    margin-top: 20px;
+    margin: 20px 0;
 
     display: flex;
     justify-content: space-around;
 
-    font-size: 24px;
+    font-size: 18px;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .jugador {
@@ -146,4 +335,57 @@ h1 {
     border-radius: 15px;
 
     background: rgba(255,255,255,0.1);
+    flex: 1;
+    min-width: 200px;
+}
+
+.btn-volver {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.btn-volver:hover {
+    background: #c0392b;
+    transform: scale(1.05);
+}
+
+/* ===================== RESPONSIVO ===================== */
+
+@media (max-width: 768px) {
+    .pantalla {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .panel-superior {
+        flex-direction: column;
+    }
+
+    .info {
+        width: 100%;
+    }
+
+    .config-inputs {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .config-inputs input {
+        width: 100%;
+    }
+
+    .panel-jugadores {
+        flex-direction: column;
+    }
 }
